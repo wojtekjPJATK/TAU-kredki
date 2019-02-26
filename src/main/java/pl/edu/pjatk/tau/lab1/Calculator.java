@@ -1,9 +1,6 @@
 package pl.edu.pjatk.tau.lab1;
 
-/**
- * Hello world!
- *
- */
+
 public class Calculator 
 {
     public int add(int a, int b) {
