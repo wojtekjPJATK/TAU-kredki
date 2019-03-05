@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.matchers.JUnitMatchers;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 
@@ -13,14 +12,13 @@ import pl.edu.pjatk.tau.lab2.domain.Crayon;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 
 @RunWith(BlockJUnit4ClassRunner.class)
 public class CrayonsInMemoryTest {
 
-    CrayonsInMemory dao;
+    CrayonsInMemoryDAO dao;
 
     @Before
     public void setup() {
@@ -30,7 +28,7 @@ public class CrayonsInMemoryTest {
         c1.setColor("Red");
         c2.setId(2L);
         c2.setColor("Blue");
-        dao = new CrayonsInMemory();
+        this.dao = new CrayonsInMemoryDAO();
         dao.crayons = new HashMap<Long, Crayon>();
         dao.crayons.put(1L,c1);
         dao.crayons.put(2L,c2);
@@ -38,7 +36,7 @@ public class CrayonsInMemoryTest {
 
     @Test
     public void createDaoObjectTest() {
-        assertNotNull(dao);
+        assertNotNull(this.dao);
     }
 
     @Test

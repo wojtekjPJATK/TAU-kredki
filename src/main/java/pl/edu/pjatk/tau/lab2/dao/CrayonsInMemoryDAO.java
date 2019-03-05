@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class CrayonsInMemory implements DAO<Crayon> {
+public class CrayonsInMemoryDAO implements DAO<Crayon> {
     protected Map<Long,Crayon> crayons;
 
     @Override
