@@ -91,4 +91,13 @@ public class CrayonsInMemoryTest {
         assertEquals(3, dao.crayons.values().size());
         assertThat(dao.crayons.values(), hasItem(c));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void saveExistsingRecordTest() {
+        Crayon c = new Crayon();
+        c.setId(1L);
+        c.setColor("Red");
+        dao.save(c);
+        assertEquals(2, dao.crayons.values().size());
+    }
 }

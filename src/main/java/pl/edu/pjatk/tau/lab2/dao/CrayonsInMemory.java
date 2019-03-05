@@ -21,6 +21,8 @@ public class CrayonsInMemory implements DAO<Crayon> {
 
     @Override
     public void save(Crayon o) {
+        if (crayons.containsKey(o.getId()))
+            throw new IllegalArgumentException("Key already exist");
         crayons.put(o.getId(), o);
     }
 
