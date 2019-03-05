@@ -12,6 +12,7 @@ import pl.edu.pjatk.tau.lab2.domain.Crayon;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -98,4 +99,20 @@ public class CrayonsInMemoryTest {
         dao.save(c);
         assertEquals(2, dao.crayons.values().size());
     }
+
+    @Test
+    public void getAllItemsTest() {
+        List<Crayon> list = dao.getAll();
+        assertEquals(2, list.size());
+
+        Crayon c = new Crayon();
+        c.setColor("Yellow");
+        c.setId(3L);
+        dao.save(c);
+
+        list = dao.getAll();
+        assertEquals(3, list.size());
+        assertThat(list, hasItem(c));
+    }
+
 }
