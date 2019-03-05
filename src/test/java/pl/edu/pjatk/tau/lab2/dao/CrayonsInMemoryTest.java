@@ -81,4 +81,14 @@ public class CrayonsInMemoryTest {
         dao.delete(c1);
         assertEquals(1, dao.crayons.values().size());
     }
+
+    @Test
+    public void saveOneRecordTest() {
+        Crayon c = new Crayon();
+        c.setColor("Yellow");
+        c.setId(3L);
+        dao.save(c);
+        assertEquals(3, dao.crayons.values().size());
+        assertThat(dao.crayons.values(), hasItem(c));
+    }
 }

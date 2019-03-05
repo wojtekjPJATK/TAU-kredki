@@ -21,7 +21,7 @@ public class CrayonsInMemory implements DAO<Crayon> {
 
     @Override
     public void save(Crayon o) {
-
+        crayons.put(o.getId(), o);
     }
 
     @Override
