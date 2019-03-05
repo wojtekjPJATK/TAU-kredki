@@ -79,6 +79,7 @@ public class CrayonsInMemoryTest {
         c1.setId(1L);
         dao.delete(c1);
         assertEquals(1, dao.crayons.values().size());
+        assertThat(dao.crayons.values(), not(hasItem(c1)));
     }
 
     @Test
