@@ -31,11 +31,13 @@ public class CrayonsDBDAOTest {
     Connection connection;
     Random random;
     List<Crayon> initialDatabaseState;
+    CrayonsDBDAO dao;
 
     @Before
     public void setup() throws SQLException {
-        random = new Random();
+        dao = new CrayonsDBDAO();
         connection = DriverManager.getConnection(url);
+        random = new Random();
         initialDatabaseState = new LinkedList<>();
         try {
             connection.createStatement()
@@ -60,34 +62,28 @@ public class CrayonsDBDAOTest {
             }
             initialDatabaseState.add(crayon);
         }
+        dao.setConnection(connection);
     }
 
     @Test
     public void setConnectionCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         assertNotNull(dao.getConnection());
         assertEquals(dao.getConnection(), connection);
     }
 
     @Test
     public void setConnectionCreatesQueriesCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         assertNotNull(dao.preparedStatementGetAll);
     }
 
     @Test
     public void getAllCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         List<Crayon> result = dao.getAllCrayons();
         assertThat(result.size(), equalTo(initialDatabaseState.size()));
     }
 
     @Test
     public void getAllWithBadDatabaseCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
         try {
             connection.createStatement()
                     .executeUpdate("DROP TABLE Crayon");
@@ -101,8 +97,6 @@ public class CrayonsDBDAOTest {
 
     @Test
     public void addCrayonCheck() throws SQLException{
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         Crayon c = new Crayon();
         c.setColor("Green");
         assertEquals(1, dao.addCrayon(c));
@@ -111,8 +105,6 @@ public class CrayonsDBDAOTest {
 
     @Test
     public void deleteCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         Crayon c = initialDatabaseState.get(3);
         assertEquals(1, dao.deleteCrayon(c));
         assertEquals(dao.getAllCrayons().size(), initialDatabaseState.size() - 1);
@@ -120,8 +112,6 @@ public class CrayonsDBDAOTest {
 
     @Test
     public void updateCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         Crayon c = initialDatabaseState.get(3);
         String color = new String(c.getColor());
         assertEquals(1, dao.updateCrayon(c));
@@ -132,8 +122,6 @@ public class CrayonsDBDAOTest {
 
     @Test
     public void getCrayonCheck() throws SQLException {
-        CrayonsDBDAO dao = new CrayonsDBDAO();
-        dao.setConnection(connection);
         Crayon c = initialDatabaseState.get(2);
         assertEquals(c.getColor(), dao.getCrayon(c.getId()).getColor());
     }
