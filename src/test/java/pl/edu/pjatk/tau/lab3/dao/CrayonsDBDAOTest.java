@@ -114,10 +114,11 @@ public class CrayonsDBDAOTest {
     public void updateCheck() throws SQLException {
         Crayon c = initialDatabaseState.get(3);
         String color = new String(c.getColor());
+        c.setColor("dsfsdflkj");
         assertEquals(1, dao.updateCrayon(c));
         List<Crayon> all = new LinkedList<>();
         all = dao.getAllCrayons();
-        assertNotEquals(color, all.get(3));
+        assertNotEquals(color, all.get(3).getColor());
     }
 
     @Test
