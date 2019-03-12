@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CrayonsDBDAO implements DAO<Crayon> {
     
-    public PreparedStatement preparedStatementGetAll, addSt, delSt;
+    public PreparedStatement preparedStatementGetAll, addSt, delSt, updateSt;
     
     Connection connection;
     
@@ -28,6 +28,7 @@ public class CrayonsDBDAO implements DAO<Crayon> {
                 "SELECT id, color FROM Crayon ORDER BY id");
         addSt = connection.prepareStatement("INSERT INTO Crayon (COLOR) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
         delSt = connection.prepareStatement("DELETE FROM Crayon where id = ?");
+        updateSt = connection.prepareStatement("UPDATE Crayon SET color=? WHERE id = ?");
     }
 
     @Override
@@ -74,6 +75,26 @@ public class CrayonsDBDAO implements DAO<Crayon> {
         } catch (SQLException e) {
             throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
 }
+	}
+
+	@Override
+	public int updateCrayon(Crayon crayon) throws SQLException {
+		int count = 0;
+        try {
+            updateSt.setString(1, crayon.getColor());
+            updateSt.setLong(2, crayon.getId());
+            count = updateSt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+        }
+        if (count <= 0)
+            throw new SQLException("crayon not found for update");
+return count;
+	}
+
+	@Override
+	public Crayon getCrayon(long id) throws SQLException {
+		return null;
 	}
 
 }
