@@ -58,7 +58,6 @@ public class CrayonsDBDAOTest {
             if (keys .next()) {
                 crayon.setId(keys.getLong(1));
             }
-            LOGGER.log(Level.INFO,"inserted "+ crayon);
             initialDatabaseState.add(crayon);
         }
     }
@@ -85,6 +84,7 @@ public class CrayonsDBDAOTest {
         List<Crayon> result = dao.getAllCrayons();
         assertThat(result.size(), equalTo(initialDatabaseState.size()));
     }
+
     @Test
     public void getAllWithBadDatabaseCheck() throws SQLException {
         CrayonsDBDAO dao = new CrayonsDBDAO();
@@ -97,6 +97,16 @@ public class CrayonsDBDAOTest {
         }
         List<Crayon> retrievedPersons = dao.getAllCrayons();
         assertNull(retrievedPersons);
+    }
+
+    @Test
+    public void addCrayonCheck() throws SQLException{
+        CrayonsDBDAO dao = new CrayonsDBDAO();
+        dao.setConnection(connection);
+        Crayon c = new Crayon();
+        c.setColor("Green");
+        assertEquals(1, dao.addCrayon(c));
+        assertEquals(dao.getAllCrayons().size(), initialDatabaseState.size() + 1);
     }
 
     @After

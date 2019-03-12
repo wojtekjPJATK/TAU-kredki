@@ -6,12 +6,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CrayonsDBDAO implements DAO<Crayon> {
     
-    public PreparedStatement preparedStatementGetAll;
+    public PreparedStatement preparedStatementGetAll, addSt;
     
     Connection connection;
     
@@ -25,6 +26,7 @@ public class CrayonsDBDAO implements DAO<Crayon> {
         this.connection = connection;
         preparedStatementGetAll = connection.prepareStatement(
                 "SELECT id, color FROM Crayon ORDER BY id");
+        addSt = connection.prepareStatement("INSERT INTO Crayon (COLOR) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
     }
 
     @Override
@@ -43,5 +45,24 @@ public class CrayonsDBDAO implements DAO<Crayon> {
             return null;
         }
     }
+
+	@Override
+	public int addCrayon(Crayon crayon) {
+        int count = 0;
+        try {
+            System.out.println(crayon.getColor());
+            System.out.println(addSt);
+            addSt.setString(1, crayon.getColor());
+            count = addSt.executeUpdate();
+            ResultSet generatedKeys = addSt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                crayon.setId(generatedKeys.getLong(1));
+            }
+        } catch (SQLException e) {
+            System.out.println("Adding error");
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+        }
+        return count;
+	}
 
 }
