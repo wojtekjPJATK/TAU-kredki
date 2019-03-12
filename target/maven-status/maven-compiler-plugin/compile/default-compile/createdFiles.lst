@@ -1,1 +1,7 @@
+pl/edu/pjatk/tau/lab3/dao/CrayonsDBDAO.class
+pl/edu/pjatk/tau/lab3/domain/Crayon.class
 pl/edu/pjatk/tau/lab1/Calculator.class
+pl/edu/pjatk/tau/lab2/dao/CrayonsInMemoryDAO.class
+pl/edu/pjatk/tau/lab3/dao/DAO.class
+pl/edu/pjatk/tau/lab2/dao/DAO.class
+pl/edu/pjatk/tau/lab2/domain/Crayon.class
