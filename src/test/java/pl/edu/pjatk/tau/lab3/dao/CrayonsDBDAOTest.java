@@ -130,6 +130,14 @@ public class CrayonsDBDAOTest {
         assertNotEquals(color, all.get(3));
     }
 
+    @Test
+    public void getCrayonCheck() throws SQLException {
+        CrayonsDBDAO dao = new CrayonsDBDAO();
+        dao.setConnection(connection);
+        Crayon c = initialDatabaseState.get(2);
+        assertEquals(c.getColor(), dao.getCrayon(c.getId()).getColor());
+    }
+
     @After
     public void cleanup() throws SQLException{
         Connection connection = DriverManager.getConnection(url);

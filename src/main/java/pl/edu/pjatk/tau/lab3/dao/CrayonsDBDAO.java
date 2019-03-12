@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CrayonsDBDAO implements DAO<Crayon> {
     
-    public PreparedStatement preparedStatementGetAll, addSt, delSt, updateSt;
+    public PreparedStatement preparedStatementGetAll, addSt, delSt, updateSt, getSt;
     
     Connection connection;
     
@@ -29,6 +29,7 @@ public class CrayonsDBDAO implements DAO<Crayon> {
         addSt = connection.prepareStatement("INSERT INTO Crayon (COLOR) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
         delSt = connection.prepareStatement("DELETE FROM Crayon where id = ?");
         updateSt = connection.prepareStatement("UPDATE Crayon SET color=? WHERE id = ?");
+        getSt = connection.prepareStatement("SELECT id, color FROM Crayon WHERE id = ?");
     }
 
     @Override
@@ -52,8 +53,6 @@ public class CrayonsDBDAO implements DAO<Crayon> {
 	public int addCrayon(Crayon crayon) {
         int count = 0;
         try {
-            System.out.println(crayon.getColor());
-            System.out.println(addSt);
             addSt.setString(1, crayon.getColor());
             count = addSt.executeUpdate();
             ResultSet generatedKeys = addSt.getGeneratedKeys();
@@ -89,12 +88,28 @@ public class CrayonsDBDAO implements DAO<Crayon> {
         }
         if (count <= 0)
             throw new SQLException("crayon not found for update");
-return count;
+        return count;
 	}
 
 	@Override
 	public Crayon getCrayon(long id) throws SQLException {
-		return null;
+		try {
+            getSt.setLong(1, id);
+            ResultSet rs = getSt.executeQuery();
+
+            System.out.println(rs);
+
+            if (rs.next()) {
+                Crayon c = new Crayon();
+                c.setId(rs.getInt("id"));
+                c.setColor(rs.getString("color"));
+                return c;
+            }
+
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+        }
+        throw new SQLException("Crayon with id " + id + " does not exist");
 	}
 
 }
