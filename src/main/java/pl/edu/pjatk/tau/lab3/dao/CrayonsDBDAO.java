@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CrayonsDBDAO implements DAO<Crayon> {
     
-    public PreparedStatement preparedStatementGetAll, addSt;
+    public PreparedStatement preparedStatementGetAll, addSt, delSt;
     
     Connection connection;
     
@@ -27,6 +27,7 @@ public class CrayonsDBDAO implements DAO<Crayon> {
         preparedStatementGetAll = connection.prepareStatement(
                 "SELECT id, color FROM Crayon ORDER BY id");
         addSt = connection.prepareStatement("INSERT INTO Crayon (COLOR) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+        delSt = connection.prepareStatement("DELETE FROM Crayon where id = ?");
     }
 
     @Override
@@ -63,6 +64,16 @@ public class CrayonsDBDAO implements DAO<Crayon> {
             throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
         }
         return count;
+	}
+
+	@Override
+	public int deleteCrayon(Crayon crayon) {
+		try {
+            delSt.setLong(1, crayon.getId());
+            return delSt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.getMessage() + "\n" + e.getStackTrace().toString());
+}
 	}
 
 }

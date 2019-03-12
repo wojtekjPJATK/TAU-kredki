@@ -109,6 +109,16 @@ public class CrayonsDBDAOTest {
         assertEquals(dao.getAllCrayons().size(), initialDatabaseState.size() + 1);
     }
 
+    @Test
+    public void deleteCheck() throws SQLException {
+        CrayonsDBDAO dao = new CrayonsDBDAO();
+        dao.setConnection(connection);
+        Crayon c = initialDatabaseState.get(3);
+        assertEquals(1, dao.deleteCrayon(c));
+        assertEquals(dao.getAllCrayons().size(), initialDatabaseState.size() - 1);
+
+    }
+
     @After
     public void cleanup() throws SQLException{
         Connection connection = DriverManager.getConnection(url);
