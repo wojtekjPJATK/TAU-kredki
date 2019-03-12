@@ -124,7 +124,7 @@ public class CrayonsDBDAOTest {
     @Test
     public void getCrayonCheck() throws SQLException {
         Crayon c = initialDatabaseState.get(2);
-        assertEquals(c.getColor(), dao.getCrayon(c.getId()).getColor());
+        assertEquals(c, dao.getCrayon(c.getId()));
     }
 
     @After
