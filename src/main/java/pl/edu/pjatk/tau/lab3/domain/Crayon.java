@@ -23,6 +23,11 @@ public class Crayon {
     @Override
 	public boolean equals(Object o) {
 		Crayon other = (Crayon) o;
-		return other.getColor() == this.getColor() && other.getId() == this.getId();
-}
+		return (other.getColor().equals(this.getColor())) && (other.getId() == this.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "{" + id + ", " + color + "}";
+    }
 }

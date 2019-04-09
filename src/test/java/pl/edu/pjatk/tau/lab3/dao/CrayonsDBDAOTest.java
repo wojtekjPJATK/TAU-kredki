@@ -114,6 +114,8 @@ public class CrayonsDBDAOTest {
     public void updateCheck() throws SQLException {
         Crayon c = initialDatabaseState.get(3);
         String color = new String(c.getColor());
+        String color2 = "sdfsd";
+        color2 = c.getColor();
         c.setColor("dsfsdflkj");
         assertEquals(1, dao.updateCrayon(c));
         List<Crayon> all = new LinkedList<>();
@@ -124,7 +126,8 @@ public class CrayonsDBDAOTest {
     @Test
     public void getCrayonCheck() throws SQLException {
         Crayon c = initialDatabaseState.get(2);
-        assertEquals(c, dao.getCrayon(c.getId()));
+        //assertThat(c.toString(), is(dao.getCrayon(c.getId()).toString() ));
+        assertThat(c, is(dao.getCrayon(c.getId()) ));
     }
 
     @After

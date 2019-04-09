@@ -23,6 +23,11 @@
 			<artifactId>hsqldb</artifactId>
 			<version>${hsqldb.version}</version>
   </dependency>
+  <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-server</artifactId>
+      <version>3.0.1</version>
+  </dependency>
   </dependencies>
     <build>
     <plugins>
