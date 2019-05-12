@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "crayon")
 @NamedQueries({
         @NamedQuery(name = "crayons.all", query = "Select c from Crayon c"),
-        @NamedQuery(name = "crayons.findbyColor", query = "Select c from Crayon c where c.color like :givenColor")
+        @NamedQuery(name = "crayons.findbyColor", query = "Select c from Crayon c where c.color like :givenColor"),
+        @NamedQuery(name = "crayons.findByCreator", query="Select c from Crayon c where c.creator=:creator")
 })
 public class Crayon {
 

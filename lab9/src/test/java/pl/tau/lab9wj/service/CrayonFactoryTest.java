@@ -17,6 +17,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import static org.hamcrest.CoreMatchers.*;
 
 import static org.mockito.Mockito.*;
 
@@ -36,6 +37,8 @@ public class CrayonFactoryTest {
 
 	List<Long> crayonIds;
 	List<Long> workerIds;
+
+	Person janusz, zdzisiek;
 
 	@Mock
 	MyDate date;
@@ -67,12 +70,12 @@ public class CrayonFactoryTest {
 	public void setup() {
 		crayonIds = new LinkedList<>();
 		workerIds = new LinkedList<>();
-		Person w1 = addWorkerHelper("Janusz");
-		Person w2 = addWorkerHelper("Zdzisiek");
+		janusz = addWorkerHelper("Janusz");
+		zdzisiek = addWorkerHelper("Zdzisiek");
 
-		addCrayonHelper("Red", w1);
-		addCrayonHelper("Blue", w2);
-		addCrayonHelper("Green", w1);
+		addCrayonHelper("Red", janusz);
+		addCrayonHelper("Blue", zdzisiek);
+		addCrayonHelper("Green", janusz);
 		addCrayonHelper("Red", null);
 	}
 
@@ -130,6 +133,29 @@ public class CrayonFactoryTest {
 		c.setColor("New");
 		crayonFactory.updateCrayon(c);
 		assertEquals(size+1,crayonFactory.findCrayonsByColor("New").size());
+	}
+
+	@Test
+	public void findCrayonsByCreatorTest() {
+		List<Crayon> crayons = crayonFactory.findCrayonsByCreator(janusz);
+		for(Crayon crayon: crayons) assertEquals("Janusz", crayon.getCreator().getName());
+	}
+
+	@Test
+	public void transferCrayonToAnotherCreatorTest() {
+		List<Crayon> januszCrayons = crayonFactory.findCrayonsByCreator(janusz);
+		int januszCrayonsInitial = januszCrayons.size();
+		Crayon c = januszCrayons.get(0);
+		assertEquals(true, crayonFactory.transferCrayonToAnotherCreator(c, zdzisiek));
+		assertTrue(januszCrayonsInitial > crayonFactory.findCrayonsByCreator(janusz).size());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void transferCrayonToSamePersonThrowsAnExceptionTest() {
+		List<Crayon> januszCrayons = crayonFactory.findCrayonsByCreator(janusz);
+		int januszCrayonsInitial = januszCrayons.size();
+		Crayon c = januszCrayons.get(0);
+		crayonFactory.transferCrayonToAnotherCreator(c, janusz);
 	}
 
 }

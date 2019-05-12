@@ -15,4 +15,7 @@ public interface CrayonFactory {
 	void updateCrayon(Crayon crayon);
 
 	Person findWorker(String name);
+
+	List<Crayon> findCrayonsByCreator(Person creator);
+	boolean transferCrayonToAnotherCreator(Crayon crayon, Person newCreator);
 }

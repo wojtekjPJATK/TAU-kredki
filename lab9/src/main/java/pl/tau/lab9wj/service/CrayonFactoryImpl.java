@@ -70,4 +70,20 @@ public class CrayonFactoryImpl implements CrayonFactory {
 		return (Long) sessionFactory.getCurrentSession().save(crayon);
 	}
 
+	@Override
+	public List<Crayon> findCrayonsByCreator(Person creator) {
+		return (List<Crayon>) sessionFactory.getCurrentSession().getNamedQuery("crayons.findByCreator").setParameter("creator", creator).list();
+	}
+
+	@Override
+	public boolean transferCrayonToAnotherCreator(Crayon crayon, Person newCreator) throws IllegalArgumentException {
+		if(newCreator == null) throw new IllegalArgumentException("Can't transfer to null");
+		if(newCreator.equals(crayon.getCreator())) throw new IllegalArgumentException("Cant transfer to the same person");
+		crayon.setCreator(newCreator);
+		sessionFactory.getCurrentSession().save(crayon);
+		sessionFactory.getCurrentSession().save(newCreator);
+		return true;
+	}
+
+
 }
