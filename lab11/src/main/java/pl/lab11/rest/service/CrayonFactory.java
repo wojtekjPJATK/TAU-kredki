@@ -8,6 +8,7 @@ public interface CrayonFactory {
 	
 	Long addWorker(Person person);
 	Long addCrayon(Crayon crayon);
+	List<Crayon> findAllCrayons(int index, int results);
 	List<Crayon> findAllCrayons();
 	List<Crayon> findCrayonsByColor(String color);
 	void deleteCrayon(Crayon crayon);

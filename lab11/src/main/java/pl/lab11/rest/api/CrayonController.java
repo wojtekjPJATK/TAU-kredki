@@ -1,6 +1,8 @@
 package pl.lab11.rest.api;
 
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.lab11.rest.domain.Crayon;
@@ -16,10 +18,19 @@ public class CrayonController {
     @Autowired
     CrayonFactory crayonFactory;
 
-    @RequestMapping("/crayons")
+    @RequestMapping("/crayons/{}/{}")
     public java.util.List<Crayon> getCrayons() {
         List<Crayon> crayons = new LinkedList<>();
-        for (Crayon c : crayonFactory.findAllCrayons()) {
+        for (Crayon c : crayonFactory.findAllCrayons(0, 2)) {
+            crayons.add(c.myClone());
+        }
+        return crayons;
+    }
+
+    @RequestMapping("/crayons/{start}/{max}")
+    public java.util.List<Crayon> getCrayons(@PathVariable("start") int start, @PathVariable("max") int max) {
+        List<Crayon> crayons = new LinkedList<>();
+        for (Crayon c : crayonFactory.findAllCrayons(start, max)) {
             crayons.add(c.myClone());
         }
         return crayons;
@@ -29,6 +40,17 @@ public class CrayonController {
     public Crayon addCrayon(@RequestBody Crayon ncrayon) {
         ncrayon.setId(crayonFactory.addCrayon(ncrayon));
         return ncrayon;
+    }
+
+    @RequestMapping(value = "/crayons/{color}",method = RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Crayon updateCrayon(@RequestBody Crayon ncrayon, @PathVariable("color") String color) throws NotFoundException{
+        Crayon c = crayonFactory.findCrayonsByColor(color).get(0);
+        if (c == null) throw new NotFoundException();
+        System.out.println(ncrayon);
+        c.setColor(ncrayon.getColor());
+        crayonFactory.updateCrayon(c);
+        return c;
     }
 
     @RequestMapping("/")
@@ -56,7 +78,7 @@ public class CrayonController {
         return crayons;
     }
 
-    @RequestMapping(value = "/crayons/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/crayons/{color}", method = RequestMethod.DELETE)
     @ResponseBody
     public String deleteCrayon(@PathVariable("color") String color) throws SQLException {
         crayonFactory.deleteCrayon(crayonFactory.findCrayonsByColor(color).get(0));

@@ -3,6 +3,7 @@ package pl.lab11.rest.service;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,8 +29,17 @@ public class CrayonFactoryImpl implements CrayonFactory {
 	}
 	
 	@Override
+	public List<Crayon> findAllCrayons(int index, int results) {
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("crayons.all");
+		query.setFirstResult(index);
+		query.setMaxResults(results);
+		return (List<Crayon>) query.list();
+	}
+
+	@Override
 	public List<Crayon> findAllCrayons() {
-		return (List<Crayon>) sessionFactory.getCurrentSession().getNamedQuery("crayons.all").list();
+		Query query = sessionFactory.getCurrentSession().getNamedQuery("crayons.all");
+		return (List<Crayon>) query.list();
 	}
 
 	@Override
