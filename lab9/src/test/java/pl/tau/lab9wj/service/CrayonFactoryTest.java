@@ -144,10 +144,13 @@ public class CrayonFactoryTest {
 	@Test
 	public void transferCrayonToAnotherCreatorTest() {
 		List<Crayon> januszCrayons = crayonFactory.findCrayonsByCreator(janusz);
+		List<Crayon> zdzisiekCrayons = crayonFactory.findCrayonsByCreator(zdzisiek);
 		int januszCrayonsInitial = januszCrayons.size();
+		int zdzisiekCrayonsInitial = zdzisiekCrayons.size();
 		Crayon c = januszCrayons.get(0);
 		assertEquals(true, crayonFactory.transferCrayonToAnotherCreator(c, zdzisiek));
 		assertTrue(januszCrayonsInitial > crayonFactory.findCrayonsByCreator(janusz).size());
+		assertTrue(zdzisiekCrayonsInitial < crayonFactory.findCrayonsByCreator(zdzisiek).size());
 	}
 
 	@Test(expected=IllegalArgumentException.class)
