@@ -18,7 +18,7 @@
         Scans within the base package of the application for @Components to
         configure as beans
     -->
-    <context:component-scan base-package="pl.puzniakowski.shdemo"/>
+    <context:component-scan base-package="pl.lab11.rest"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -45,7 +45,7 @@
                 <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
-        <property name="packagesToScan" value="pl.puzniakowski.shdemo.domain"/>
+        <property name="packagesToScan" value="pl.lab11.rest.domain"/>
     </bean>
 
     <bean id="txManager"
