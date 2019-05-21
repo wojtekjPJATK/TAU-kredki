@@ -58,12 +58,13 @@ public class CrayonFactoryImpl implements CrayonFactory {
 	}
 
 	@Override
-	public void deleteCrayon(Crayon crayon) {
+	public boolean deleteCrayon(Crayon crayon) {
         if (crayon.getCreator() != null) {
             crayon.getCreator().getCrayons().remove(crayon);
             sessionFactory.getCurrentSession().update(crayon.getCreator());
         }
-	    sessionFactory.getCurrentSession().delete(crayon);
+		sessionFactory.getCurrentSession().delete(crayon);
+		return true;
 	}
 
 	@Override

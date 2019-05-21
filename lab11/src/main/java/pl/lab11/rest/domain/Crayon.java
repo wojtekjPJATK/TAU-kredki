@@ -65,8 +65,8 @@ public class Crayon {
 
         if (!(o instanceof Crayon))
             return false;
-
-        return id != null && id.equals(((Crayon) o).getId());
+        Crayon c = (Crayon) o;
+        return this.getColor().equals(c.getColor());
     }
 
     @Override

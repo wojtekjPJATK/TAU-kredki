@@ -11,7 +11,7 @@ public interface CrayonFactory {
 	List<Crayon> findAllCrayons(int index, int results);
 	List<Crayon> findAllCrayons();
 	List<Crayon> findCrayonsByColor(String color);
-	void deleteCrayon(Crayon crayon);
+	boolean deleteCrayon(Crayon crayon);
 	void updateCrayon(Crayon crayon);
 
 	Person findWorker(String name);

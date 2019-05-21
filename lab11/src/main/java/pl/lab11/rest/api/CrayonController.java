@@ -47,7 +47,6 @@ public class CrayonController {
     public Crayon updateCrayon(@RequestBody Crayon ncrayon, @PathVariable("color") String color) throws NotFoundException{
         Crayon c = crayonFactory.findCrayonsByColor(color).get(0);
         if (c == null) throw new NotFoundException();
-        System.out.println(ncrayon);
         c.setColor(ncrayon.getColor());
         crayonFactory.updateCrayon(c);
         return c;
@@ -58,7 +57,7 @@ public class CrayonController {
         return "Hello world!";
     }
 
-    @RequestMapping(value = "/crayons/{color}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/crayons/{color}", produces = MediaType.APPLICATION_JSON_VALUE, method=RequestMethod.GET)
     @ResponseBody
     public Crayon getCrayon(@PathVariable("color") String color) throws SQLException {
         return crayonFactory.findCrayonsByColor(color).get(0);
