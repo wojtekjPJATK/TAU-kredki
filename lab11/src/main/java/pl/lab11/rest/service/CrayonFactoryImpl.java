@@ -87,14 +87,12 @@ public class CrayonFactoryImpl implements CrayonFactory {
 	}
 
 	@Override
-	public boolean transferCrayonToAnotherCreator(Crayon crayon, Person newCreator) throws IllegalArgumentException {
+	public Crayon transferCrayonToAnotherCreator(Crayon crayon, Person newCreator) throws IllegalArgumentException {
 		if(newCreator == null) throw new IllegalArgumentException("Can't transfer to null");
 		if(newCreator.equals(crayon.getCreator())) throw new IllegalArgumentException("Cant transfer to the same person");
 		crayon.setCreator(newCreator);
 		sessionFactory.getCurrentSession().save(crayon);
 		sessionFactory.getCurrentSession().save(newCreator);
-		return true;
+		return crayon;
 	}
-
-
 }

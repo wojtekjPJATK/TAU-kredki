@@ -6,6 +6,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.lab11.rest.domain.Crayon;
+import pl.lab11.rest.domain.Person;
 import pl.lab11.rest.service.CrayonFactory;
 
 import java.sql.SQLException;
@@ -82,6 +83,23 @@ public class CrayonController {
     public String deleteCrayon(@PathVariable("color") String color) throws SQLException {
         crayonFactory.deleteCrayon(crayonFactory.findCrayonsByColor(color).get(0));
         return "OK";
+    }
+
+    @RequestMapping(value = "/crayons/byworker/{creator}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Crayon> getCrayonsByCreator(@PathVariable("creator") String creator) throws SQLException {
+        Person p = crayonFactory.findWorker(creator);
+        List<Crayon> crayons = crayonFactory.findCrayonsByCreator(p);
+        return crayons;
+    }
+
+    @RequestMapping(value = "/crayons/{color}/{creator}", method = RequestMethod.GET)
+    @ResponseBody
+    public Crayon transferCrayon(@PathVariable("creator") String creator, @PathVariable("color") String color) throws SQLException {
+        Person p = crayonFactory.findWorker(creator);
+        Crayon c = crayonFactory.findCrayonsByColor(color).get(0);
+        crayonFactory.transferCrayonToAnotherCreator(c, p);
+        return c;
     }
 
 }

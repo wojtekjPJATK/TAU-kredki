@@ -46,4 +46,15 @@ public class Person {
 	public void setCrayons(List<Crayon> crayons) {
 		this.crayons = crayons;
 	}
+
+	@Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (!(o instanceof Person))
+            return false;
+        Person p = (Person) o;
+        return this.getName().equals(p.getName());
+    }
 }

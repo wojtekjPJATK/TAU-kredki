@@ -16,10 +16,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import pl.lab11.rest.domain.Crayon;
+import pl.lab11.rest.domain.Person;
 import pl.lab11.rest.service.CrayonFactory;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -138,4 +140,47 @@ public class CrayonControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("Red")));
     }
+
+    @Test 
+    public void getCrayonsByWorker() throws Exception {
+        Person p = new Person();
+        LinkedList<Crayon> crayons = new LinkedList<Crayon>();
+        p.setName("Janusz");
+        Crayon c = new Crayon();
+        c.setColor("Red");
+        c.setCreator(p);
+        Crayon c2 = new Crayon();
+        c2.setColor("Blue");
+        c2.setCreator(p);
+        crayons.add(c);
+        crayons.add(c2);
+        service.addWorker(p);
+        service.addCrayon(c);
+        when(service.findWorker("Janusz")).thenReturn(p);
+        when(service.findCrayonsByCreator(p)).thenReturn(crayons);
+        this.mockMvc.perform(get("/crayons/byworker/Janusz"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("Red")))
+            .andExpect(content().string(containsString("Blue")));
+    }
+
+    @Test
+    public void transferCrayonToAnotherWorkerTest() throws Exception {
+        Person p = new Person();
+        Person p2 = new Person();
+        p.setName("Janusz");
+        p2.setName("Zdzisiek");
+        Crayon c = new Crayon();
+        c.setColor("Red");
+        c.setCreator(p);
+        LinkedList<Crayon> crayons = new LinkedList<Crayon>();
+        crayons.add(c);
+        when(service.findWorker(p.getName())).thenReturn(p);
+        when(service.findCrayonsByColor(c.getColor())).thenReturn(crayons);
+        c.setCreator(p2);
+        when(service.transferCrayonToAnotherCreator(c, p2)).thenReturn(c);
+        this.mockMvc.perform(get("/crayons/Red/Zdzisiek"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("Zdzisiek")));
+        }
 }
