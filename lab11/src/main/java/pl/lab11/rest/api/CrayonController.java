@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.ws.http.HTTPException;
+
 @RestController
 public class CrayonController {
 
@@ -100,6 +102,16 @@ public class CrayonController {
         Crayon c = crayonFactory.findCrayonsByColor(color).get(0);
         crayonFactory.transferCrayonToAnotherCreator(c, p);
         return c;
+    }
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Crayon getCrayonByID(@PathVariable("id") String id) throws SQLException {
+        List<Crayon> crayons = crayonFactory.findAllCrayons();
+        for(Crayon c: crayons) {
+            if(c.getId() == Long.parseLong(id)) return c;
+        }
+        throw new HTTPException(404);
     }
 
 }
