@@ -9,7 +9,12 @@ describe("cenzor", function () {
         <div class="label">Color</div>
         <input id="colorInput" type="text" name="colorInput">
         `;
-        document.body.appendChild(elem)
+        document.body.appendChild(elem);
+        document.addEventListener('keydown', function(e){
+            let input = document.getElementById('colorInput');
+            input.value += "d";            
+            valid(elem);
+         });
     });
 
     afterEach(function () {
@@ -46,6 +51,24 @@ describe("cenzor", function () {
         input.value = "Re"
         valid(elem);
         expect(elem.className).toEqual("invalid");
+        var event = document.createEvent('Event');
+        event.key = 67;
+        event.initEvent('keydown');
+        document.dispatchEvent(event);
+        expect(elem.className).not.toEqual("invalid");        
+    });
+
+    it("test after keydown event", function () {
+        let elem = document.getElementById('form');
+        let input = document.getElementById('colorInput');
+        input.value = "Re"
+        valid(elem);
+        expect(elem.className).toEqual("invalid");
+        var event = document.createEvent('Event');
+        event.key = 67;
+        event.initEvent('keydown');
+        document.dispatchEvent(event);
+        expect(elem.className).not.toEqual("invalid");        
     });
 
 
