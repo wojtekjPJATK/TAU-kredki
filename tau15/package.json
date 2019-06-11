@@ -1,0 +1,30 @@
+{
+  "name": "kjdemo",
+  "version": "1.0.0",
+  "description": "Karma + Jasmine demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "keywords": [
+    "karma",
+    "jasmine",
+    "demo"
+  ],
+  "author": "Tadeusz Puźniakowski",
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^3.1.0",
+    "karma": "^4.1.0",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-verbose-reporter": "0.0.6",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "browserify": "^16.2.3",
+    "jquery": "^3.4.1",
+    "karma-browserify": "^6.0.0",
+    "requirejs": "^2.3.6"
+  }
+}
